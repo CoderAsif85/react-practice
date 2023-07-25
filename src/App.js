@@ -27,22 +27,45 @@ import Book from './Components/book';
 class App extends Component {
 
   state = {
-    Books: [{ book_Name: 1984, author: 'ak' }, { book_Name: 'deyal', author: 'humayun' }, { book_Name: 'riri', author: 'mostak' }],
-    msg: 'list ended'
+    Books: [{ book_Name: 1984, author: 'ak' },
+    { book_Name: 'deyal', author: 'humayun' },
+    { book_Name: 'riri', author: 'mostak' }]
   }
 
   cngBookName = () => {
     this.setState({
-      Books: [{ book_Name: 'voy', author: 'humayun' }, { book_Name: 'inferno', author: 'dan brown' }, { book_Name: 'hat kata robin', author: 'jafor iqbal' }]
-    })
-  }
-  changeBookName = (event) => {
-    this.setState({
-      Books: [{ book_Name: event.target.value, author: 'humayun' },
+      Books: [{ book_Name: 'voy', author: 'humayun' },
       { book_Name: 'inferno', author: 'dan brown' },
       { book_Name: 'hat kata robin', author: 'jafor iqbal' }]
     })
+  }
+  changeBookName = (event, index) => {
+    const newBooKName = {
+      ...this.state.Books[index]
+    }
 
+
+    console.log(event.target.value)
+
+
+    newBooKName.book_Name = event.target.value;
+
+    const Books = [...this.state.Books];
+    Books[index] = newBooKName;
+
+    this.setState({
+      Books: Books
+    })
+
+
+  }
+
+  deleteBooks = index => {
+    const deleteBook = this.state.Books.slice();
+    deleteBook.splice(index, 1);
+    this.setState({
+      Books: deleteBook
+    })
   }
 
 
@@ -53,18 +76,45 @@ class App extends Component {
       color: 'white',
       width: '100px'
     };
+    const h1Style = {
+      backgroundColor: 'black',
+      width: '100%',
+      color: 'white',
+      padding: '10px'
+
+    }
+
+    const bookList = this.state.Books;
+
+
+    const AllBook = bookList.map((item, index) => {
+
+
+      return (
+
+        <Book
+          book_Name={item.book_Name}
+          author={item.author}
+          deleteItem={() => this.deleteBooks(index)}
+          inputValue={(event) => this.changeBookName(event, index)}
+
+        />
+
+
+      );
+
+    });
+
+
 
 
     return (
       <div className='App'>
-        <input type='text' onChange={this.changeBookName}></input>
+        <h1 style={h1Style}> All book List</h1>
 
-        <Book book_Name={this.state.Books[0].book_Name} author={this.state.Books[0].author} />
+        {AllBook}
 
-        <Book book_Name={this.state.Books[1].book_Name} author={this.state.Books[1].author} />
-        <Book book_Name={this.state.Books[2].book_Name} author={this.state.Books[2].author}
-          inputName={this.changeBookName} />
-        <Book msg={this.state.msg} />
+        {/* <Book msg={this.state.msg} /> */}
         <button onClick={this.cngBookName} style={BookStyleInLine}>click here for change</button>
 
       </div>
