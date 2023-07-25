@@ -29,7 +29,8 @@ class App extends Component {
   state = {
     Books: [{ book_Name: 1984, author: 'ak' },
     { book_Name: 'deyal', author: 'humayun' },
-    { book_Name: 'riri', author: 'mostak' }]
+    { book_Name: 'riri', author: 'mostak' }],
+    showBooks: true
   }
 
   cngBookName = () => {
@@ -66,6 +67,12 @@ class App extends Component {
     this.setState({
       Books: deleteBook
     })
+  }
+  toggleBooks = () => {
+    this.setState({
+      showBooks: !this.state.showBooks
+    })
+
   }
 
 
@@ -111,10 +118,11 @@ class App extends Component {
     return (
       <div className='App'>
         <h1 style={h1Style}> All book List</h1>
+        <button onClick={this.toggleBooks}> Toggle for books</button>
 
-        {AllBook}
 
-        {/* <Book msg={this.state.msg} /> */}
+        {this.state.showBooks ? AllBook : null}
+
         <button onClick={this.cngBookName} style={BookStyleInLine}>click here for change</button>
 
       </div>
