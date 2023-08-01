@@ -4,54 +4,16 @@ import BookState from "../assests/BookState";
 
 import BookList from "./lists/BookList";
 
+import NewBook from "./NewBook";
+import { Routes, Route, NavLink } from "react-router-dom";
+import SignIn from "./authorization/SignIn";
+import PrivateRoute from "./authorization/PrivateRoute";
+
 class MainComponent extends Component {
     state = {
         Books: BookState,
         showBooks: true
     }
-
-    cngBookName = () => {
-        this.setState({
-            Books: [{ book_Name: 'voy', author: 'humayun' },
-            { book_Name: 'inferno', author: 'dan brown' },
-            { book_Name: 'hat kata robin', author: 'jafor iqbal' }]
-        })
-    }
-    changeBookName = (event, index) => {
-        const newBooKName = {
-            ...this.state.Books[index]
-        }
-
-
-        console.log(event.target.value)
-
-
-        newBooKName.book_Name = event.target.value;
-
-        const Books = [...this.state.Books];
-        Books[index] = newBooKName;
-
-        this.setState({
-            Books: Books
-        })
-
-
-    }
-
-    deleteBooks = index => {
-        const deleteBook = this.state.Books.slice();
-        deleteBook.splice(index, 1);
-        this.setState({
-            Books: deleteBook
-        })
-    }
-    toggleBooks = () => {
-        this.setState({
-            showBooks: !this.state.showBooks
-        })
-
-    }
-
 
     render() {
 
@@ -60,13 +22,7 @@ class MainComponent extends Component {
             color: 'white',
             width: '100px'
         };
-        const h1Style = {
-            backgroundColor: 'black',
-            width: '100%',
-            color: 'white',
-            padding: '10px'
 
-        }
 
 
 
@@ -86,14 +42,37 @@ class MainComponent extends Component {
 
 
             <div className='App'>
-                <h1 style={h1Style}> All book List</h1>
-                <button onClick={this.toggleBooks}> Toggle for books</button>
+
+                <div className="nav-bar">
+                    <ul>
+
+                        <li>
+                            <NavLink to='/'> Sign in </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to='/books'> Books </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to='/new-book'> New Book </NavLink>
+                        </li>
+
+                    </ul>
+                </div>
+
+                <Routes>
+                    <Route path='/' element={<SignIn />}></Route>
+
+                    <Route element={<PrivateRoute />}>
+                        <Route path='/books' element={AllBook}></Route>
+                        <Route path='/new-book' element={<NewBook />}></Route>
+                    </Route>
+                </Routes>
 
 
 
-                {this.state.showBooks ? AllBook : null}
 
-                <button onClick={this.cngBookName} style={BookStyleInLine}>click here for change</button>
+
+
 
             </div>
         );
